@@ -58,3 +58,5 @@
 
 文件名: `index_\d+.php`
 
+**注：adoc多份数据参见http://fe.baidu.com/doc/fis**
+
