@@ -33,3 +33,27 @@
     
     //安装最新版本
     fis server install fisdata
+
+
+###测试数据
+测试数据存储在网站根目录的test目录下。
+模板文件放在网站根目录的template目录下。
+
+模板文件和测试数据文件对应关系如下：
+
+模板:
+    <www>/template/page/photo/index.tpl
+
+对应数据文件:
+
+    0. <www>/test/page/photo/index.php (php格式)
+    0. <www>/test/page/photo/index.json (json格式)
+    0. <www>/test/page/photo/index.text (adoc格式)
+
+也支持多份数据(php格式为例):
+    0. <www>/test/page/photo/index/index_1.php
+    0. <www>/test/page/photo/index/index_2.php
+    ...
+
+文件名: `index_\d+.php`
+
