@@ -42,7 +42,7 @@
 模板文件和测试数据文件对应关系如下：
 
 模板:
-    <www>/template/page/photo/index.tpl
+    `<www>/template/page/photo/index.tpl`
 
 对应数据文件:
 
