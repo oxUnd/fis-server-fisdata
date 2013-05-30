@@ -77,11 +77,6 @@ class FISADOCData extends FISData {
         return $data;
     }
 
-    public function getCurrentFilePath($tmpl) {
-        //以后支持多份测试数据
-        return $this->getFile($tmpl);
-    }
-
     public function save($post) {
         $file = $post['path'];
         $dir = dirname($file);

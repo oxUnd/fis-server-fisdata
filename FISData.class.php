@@ -68,6 +68,25 @@ abstract class FISData {
         return $filepath;
     }
 
+    /**
+     * 多份测试数据
+     * @param $tmpl
+     * @return array
+     */
+    public function getDataList($tmpl) {
+        $id = $this->getId($tmpl);
+        $info = pathinfo($id);
+        $test_dir = Util::normalizePath(WWW_ROOT . '/test/' . $info['dirname'] . '/' . $info['filename']);
+        $files = Util::find($test_dir, '/' . $info['filename'] . '_\d+\.'.$this->datatype.'/i');
+        if ($files) {
+            foreach ($files as $k => $filepath) {
+                $files[str_replace($test_dir . '/', '', $filepath)] = $filepath;
+                unset($files[$k]);
+            }
+        }
+        return $files;
+    }
+
     public function get($post) {
         $filepath = $post['path'];
         if (!is_file($filepath)) {
@@ -93,6 +112,9 @@ abstract class FISData {
         echo '{"message": "保存成功", "code": 0}';
     }
 
-    public function getDataList($tmpl) {}
-    public function getCurrentFilePath(){}
+    public function getCurrentFilePath($tmpl) {
+        //以后支持多份测试数据
+        return $this->getFile($tmpl);
+    }
+
 }
