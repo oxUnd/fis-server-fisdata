@@ -81,4 +81,21 @@ class FISADOCData extends FISData {
         //以后支持多份测试数据
         return $this->getFile($tmpl);
     }
+
+    public function save($post) {
+        $file = $post['path'];
+        $dir = dirname($file);
+        if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
+            echo '{"message": "填写的路径无法创建，请重新填写！", "code": 1}';
+            exit(1);
+        }
+        if (!is_file($file) && false === file_put_contents($file, '')) {
+            echo '{"message": "填写的路径无法创建，请重新填写！", "code": 1}';
+            exit(1);
+        }
+        $data = $post['data'];
+        file_put_contents($file, $data);
+        $this->parseAdocFile($file);
+        echo '{"message": "保存成功", "code": 0}';
+    }
 }
