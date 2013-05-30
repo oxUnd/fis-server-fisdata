@@ -35,9 +35,28 @@ body {
 }
 
 #render-toolbar a {
-    border: 1px solid #EEAABB;
     text-decoration: none;
+    font-family: Courier New;
+    color: #ffffff;
+    font-size: 18px;
     padding: 1px 5px;
+    text-decoration: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 1px 1px 1px #666666;
+    -moz-box-shadow: 1px 1px 1px #666666;
+    box-shadow: 1px 1px 1px #666666;
+    text-shadow: 1px 1px 3px #666666;
+    background: #1a181a;
+}
+
+#render-toolbar a:hover {
+    background: #0d8585;
+}
+
+#data-choice-toolbar select {
+    border: 1px solid;
 }
 
 #bottom-toolbar #save-path {

@@ -22,11 +22,18 @@
                 <a href="#" id="render-btn">Render</a>
             </div>
             <div id="data-choice-toolbar">
+                {%if count($default.list) > 0%}
+                <select name="data_id">
+                    {%foreach $default.list as $k => $filepath%}
+                        <option value="{%$k%}" filepath="{%$filepath%}" {%if $default.list_default == $k%}selected="selected"{%/if%}>{%$k%}</option>
+                    {%/foreach%}
+                </select>
+                {%/if%}
             </div>
         </div>
         <div id="editor">{%$default.data%}</div>
         <div id="bottom-toolbar" class="toolbar">
-            <input type="text"  id="save-path" value="{%$default.path%}"/>
+            <input type="text"  id="save-path" default-value="{%$default.path%}" value="{%$default.path%}"/>
             <button type="submit" id="save-btn">Save</button>
         </div>
         <script type="text/javascript" src="/fisdata/static/ace.js"></script>
@@ -66,6 +73,23 @@
             $('#render-btn').click(function() {
                 document.cookie = 'FIS_DEBUG_DATA=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;';
                 save();
+            });
+
+            $('#data-choice-toolbar select').change(function() {
+                var val = $(this).val();
+                $('option', this).each(function() {
+                    if (this.selected) {
+                        $('#save-path').attr('default-value', $(this).attr('filepath')).val($(this).attr('filepath'));
+                    }
+                });
+                document.cookie = 'FIS_DEBUG_DATA_ID=' + val + '; path=' + location.href + ';';
+                $('#save-path').val();
+                $.post('/fisdata/get', {
+                    'path': $('#save-path').val()
+                }, function(res) {
+                    console.log(res);
+                    editor.setValue(res);
+                });
             });
         </script>
     </div>

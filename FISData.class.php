@@ -2,10 +2,39 @@
 
 abstract class FISData {
     public $datatype;
-    public function getData() {}
+
 
     public function getDatatype() {
         return $this->datatype;
+    }
+
+    protected function existDataFile($id) {
+        $filepath = Util::normalizePath(WWW_ROOT . '/test/' . preg_replace('/\.[a-z]{2,6}$/i', '.' . $this->getDatatype(), $id));
+        if (is_file($filepath)) {
+            return $filepath;
+        }
+        return false;
+    }
+
+    /**
+     * @param $tmpl 当前渲染模板路径
+     */
+    protected function getId($tmpl) {
+        $root = Util::normalizePath(WWW_ROOT . 'template');
+        $id = str_replace($root, '', Util::normalizePath($tmpl));
+        return $id;
+    }
+
+
+    public function getData($tmpl) {}
+
+    public function get($post) {
+        $filepath = $post['path'];
+        if (!is_file($filepath)) {
+            echo "";
+            return;
+        }
+        echo file_get_contents($filepath);
     }
 
     public function save($post) {
@@ -24,6 +53,6 @@ abstract class FISData {
         echo '{"message": "保存成功", "code": 0}';
     }
 
-    public function getDataList() {}
+    public function getDataList($tmpl) {}
     public function getCurrentFilePath(){}
 }
