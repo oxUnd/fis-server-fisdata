@@ -25,7 +25,7 @@ class Manager {
         $default_arr['data'] = htmlspecialchars(file_get_contents($default->getCurrentFilepath($this->_tmpl)));
         $default_arr['list'] = $default->getDataList($this->_tmpl);
         //默认选定
-        $default_arr['list_default'] = $_COOKIE['FIS_DEBUG_DATA_ID'];
+        $default_arr['list_default'] = $default->getCookieId();
         return $default_arr;
     }
 
@@ -35,10 +35,6 @@ class Manager {
             $datatype = 'php';
         }
         return $datatype;
-    }
-
-    public function getCurrentData() {
-        $data_id = trim($_COOKIE['FIS_DEBUG_DATA_ID']);
     }
 
     public function getRenderData() {

@@ -8,8 +8,8 @@ class FISJSONData extends FISData {
     private function getFile($tmpl) {
         $id = $this->getId($tmpl);
         $info = pathinfo($id);
-        if (isset($_COOKIE['FIS_DEBUG_DATA_ID'])) {
-            $tmp_id = $info['dirname'] . '/' .$info['filename'] .'/'. $_COOKIE['FIS_DEBUG_DATA_ID'];
+        if ($cookie_id = $this->getCookieId()) {
+            $tmp_id = $info['dirname'] . '/' .$info['filename'] .'/'. $cookie_id;
             $filepath = $this->existDataFile($tmp_id);
         } else if (($list = $this->getDataList($tmpl))) {
             $tmp_id = current($list); //first

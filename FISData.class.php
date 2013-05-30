@@ -25,6 +25,21 @@ abstract class FISData {
         return $id;
     }
 
+    public function getCookieId() {
+        $cookie_id = $_COOKIE['FIS_DEBUG_DATA_ID'];
+        if ($cookie_id) {
+            $cookie_id = trim($cookie_id);
+            if ($cookie_id !== '') {
+                $arr = explode('|', $cookie_id);
+                if (trim($arr[0]) == $this->datatype) {
+                    $cookie_id = $arr[1];
+                }
+            }
+        } else {
+            $cookie_id = '';
+        }
+        return $cookie_id;
+    }
 
     public function getData($tmpl) {}
 
