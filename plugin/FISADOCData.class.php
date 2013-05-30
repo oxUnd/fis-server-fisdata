@@ -22,7 +22,7 @@ class FISADOCData extends FISData {
         return $id;
     }
 
-    private function getFile($tmpl) {
+    protected function getFile($tmpl) {
         $root = Util::normalizePath(WWW_ROOT . 'template');
         $id = str_replace($root, '', Util::normalizePath($tmpl));
         return Util::normalizePath(WWW_ROOT . '/test/' . preg_replace('/\.[a-z]{2,6}$/i', '.text', $id));
@@ -41,8 +41,12 @@ class FISADOCData extends FISData {
         if (!$id) {
             $this->parseAdocFile($this->getFile($tmpl));
         }
+        $data_path = Util::normalizePath($this->adoc_data_path . $id . '.php');
+        if (!is_file($data_path)) {
+            return array();
+        }
         ob_start();
-        require_once($this->adoc_data_path . $id . '.php');
+        require_once($data_path);
         $data = ob_get_clean();
         $data = json_decode($data, true);
         $render_data = array();
@@ -62,8 +66,12 @@ class FISADOCData extends FISData {
         if (!$id) {
             $this->parseAdocFile($this->getFile($tmpl));
         }
+        $data_path = Util::normalizePath($this->adoc_data_path . $id . 'HTML.php');
+        if (!is_file($data_path)) {
+            return array();
+        }
         ob_start();
-        require_once($this->adoc_data_path . $id . 'HTML.php');
+        require_once($data_path);
         $data = ob_get_clean();
         $data = json_decode($data, true);
         return $data;

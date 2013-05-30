@@ -33,6 +33,8 @@ abstract class FISData {
                 $arr = explode('|', $cookie_id);
                 if (trim($arr[0]) == $this->datatype) {
                     $cookie_id = $arr[1];
+                } else {
+                    $cookie_id = '';
                 }
             }
         } else {
@@ -42,6 +44,29 @@ abstract class FISData {
     }
 
     public function getData($tmpl) {}
+
+    /**
+     * 获取选定的数据文件路径
+     * @param $tmpl
+     * @return bool|string
+     */
+    protected function getFile($tmpl) {
+        $id = $this->getId($tmpl);
+        $info = pathinfo($id);
+        //特定数据
+        if ($cookie_id = $this->getCookieId()) {
+            $tmp_id = $info['dirname'] . '/' .$info['filename'] .'/'. $cookie_id;
+            $filepath = $this->existDataFile($tmp_id);
+        } else if (($list = $this->getDataList($tmpl))) {
+            //当前提供多份数据
+            $filepath = current($list); //first
+        }
+        if (false === $filepath) {
+            //没有多份数据时，默认数据路径
+            $filepath = Util::normalizePath(WWW_ROOT . '/test/' . preg_replace('/\.[a-z]{2,6}$/i', '.' . $this->datatype, $id));
+        }
+        return $filepath;
+    }
 
     public function get($post) {
         $filepath = $post['path'];
