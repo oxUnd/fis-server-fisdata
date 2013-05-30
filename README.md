@@ -51,6 +51,7 @@
     0. <www>/test/page/photo/index.text (adoc格式)
 
 也支持多份数据(php格式为例):
+
     0. <www>/test/page/photo/index/index_1.php
     0. <www>/test/page/photo/index/index_2.php
     ...
