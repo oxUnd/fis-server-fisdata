@@ -19,15 +19,26 @@
                 {%/foreach%}
             </div>
             <div id="render-toolbar">
-                <a href="#" id="render-btn">Render</a>
+                <a href="/" id="render-btn">Render</a>
             </div>
             <div id="data-choice-toolbar">
-                {%if count($default.list) > 0%}
+                {%if (count($default.list) > 0) and ($default.datatype !== 'adoc')%}
                 <select name="data_id">
                     {%foreach $default.list as $k => $filepath%}
                         <option value="{%$k%}" filepath="{%$filepath%}" {%if $default.list_default == $k%}selected="selected"{%/if%}>{%$k%}</option>
                     {%/foreach%}
                 </select>
+                {%elseif (count($default.list) > 0)%}
+                    {%foreach $default.list as $key => $data%}
+                    <div class="adoc-data-box">
+                        <div class="adoc-data-box-title">
+                            <input type="radio" value="{%$key%}" name="data-id" value="{%$key%}" {%if $default.list_default == $key %}checked="checked"{%/if%} />&nbsp;&nbsp;数据{%$key%}
+                        </div>
+                        <div class="adoc-data-box-content">
+                            {%$data%}
+                        </div>
+                    </div>
+                    {%/foreach%}
                 {%/if%}
             </div>
         </div>
@@ -56,7 +67,7 @@
             editor.setTheme("ace/theme/textmate");
             editor.getSession().setMode("ace/mode/{%$default.datatype%}");
 
-            $('input[type="radio"]').each(function() {
+            $('#datatype-choice-toolbar input[type="radio"]').each(function() {
                 $(this).click(function() {
                     editor.getSession().setMode("ace/mode/" + $(this).val());
                     //set datatype
@@ -66,11 +77,19 @@
                 });
             });
 
+            $('#data-choice-toolbar input[type="radio"]').each(function() {
+                $(this).click(function() {
+                    var val = $(this).val();
+                    document.cookie = 'FIS_DEBUG_DATA_ID={%$default.datatype%}|' + val + '; path=' + location.href + ';';
+                });
+            });
+
             $('#save-btn').click(function(){
                 save();
             });
 
-            $('#render-btn').click(function() {
+            $('#render-btn').click(function(event) {
+                event.preventDefault();
                 document.cookie = 'FIS_DEBUG_DATA=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;';
                 save();
             });
@@ -82,7 +101,7 @@
                         $('#save-path').attr('default-value', $(this).attr('filepath')).val($(this).attr('filepath'));
                     }
                 });
-                document.cookie = 'FIS_DEBUG_DATA_ID=' + val + '; path=' + location.href + ';';
+                document.cookie = 'FIS_DEBUG_DATA_ID={%$default.datatype%}|' + val + '; path=' + location.href + ';';
                 $('#save-path').val();
                 $.post('/fisdata/get', {
                     'path': $('#save-path').val()

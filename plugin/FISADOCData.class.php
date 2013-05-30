@@ -1,8 +1,25 @@
 <?php
 
 class FISADOCData extends FISData {
+
+    private $adoc_data_path;
+
     public function __construct() {
         $this->datatype = 'adoc';
+        $this->adoc_data_path = WWW_ROOT . '/test/data/';
+    }
+
+    protected function getId() {
+        $uri = $_SERVER['REQUEST_URI'];
+        if (($p = strpos($uri, '?')) !== false) {
+            $uri = substr($uri, 0, $p);
+        }
+        $uris = explode('/', $uri);
+        if (isset($uris[1]) && $uris[1] !== '') {
+            unset($uris[0]);
+            $id = implode('_', $uris);
+        }
+        return $id;
     }
 
     private function getFile($tmpl) {
@@ -11,14 +28,47 @@ class FISADOCData extends FISData {
         return Util::normalizePath(WWW_ROOT . '/test/' . preg_replace('/\.[a-z]{2,6}$/i', '.text', $id));
     }
 
+    private function parseAdocFile($filepath) {
+        $content = file_get_contents($filepath);
+        require_once(LIBS_ROOT . 'JsonPro' . DIRECTORY_SEPARATOR . 'genInterface.php');
+        $genHandle = new genInterface();
+        $genHandle->setPath($this->adoc_data_path);
+        $genHandle->genCaseData($content);
+    }
+
     public function getData($tmpl) {
-        return array();
+        $id = $this->getId();
+        if (!$id) {
+            $this->parseAdocFile($this->getFile($tmpl));
+        }
+        ob_start();
+        require_once($this->adoc_data_path . $id . '.php');
+        $data = ob_get_clean();
+        $data = json_decode($data, true);
+        $render_data = array();
+        if ($cookie_id = $this->getCookieId()) {
+            $render_data = $data[$cookie_id];
+        } else {
+            $render_data = current($data);
+        }
+        return $render_data;
     }
 
     public function fetchRemoteData($tmpl_id) {
     }
 
-    public function getDataList() {}
+    public function getDataList($tmpl) {
+        $id = $this->getId();
+        if (!$id) {
+            $this->parseAdocFile($this->getFile($tmpl));
+        }
+        ob_start();
+        require_once($this->adoc_data_path . $id . 'HTML.php');
+        $data = ob_get_clean();
+        $data = json_decode($data, true);
+        return $data;
+    }
+
     public function getCurrentFilePath($tmpl) {
         //以后支持多份测试数据
         return $this->getFile($tmpl);

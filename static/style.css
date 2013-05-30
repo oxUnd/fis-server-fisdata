@@ -59,6 +59,19 @@ body {
     border: 1px solid;
 }
 
+#data-choice-toolbar .adoc-data-box {
+    padding: 5px;
+    float:left;
+    font-size: 12px;
+}
+
+#data-choice-toolbar .adoc-data-box-content {
+    overflow: auto;
+    width: 250px;
+    height: 200px;
+    border: 1px solid #CCCCCC;
+}
+
 #bottom-toolbar #save-path {
     width: 60%;
     padding: 5px;
