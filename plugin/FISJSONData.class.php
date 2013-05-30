@@ -45,7 +45,6 @@ class FISJSONData extends FISData {
             }
         }
         return $files;
-        return $files;
     }
 
     public function getCurrentFilePath($tmpl) {
