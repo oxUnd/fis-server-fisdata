@@ -60,7 +60,7 @@ body {
 }
 
 #data-choice-toolbar .adoc-data-box {
-    padding: 5px;
+    padding: 5px 5px 5px 0;
     float:left;
     font-size: 12px;
 }
