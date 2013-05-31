@@ -53,6 +53,7 @@ abstract class FISData {
     protected function getFile($tmpl) {
         $id = $this->getId($tmpl);
         $info = pathinfo($id);
+        $filepath = '';
         //特定数据
         if ($cookie_id = $this->getCookieId()) {
             $tmp_id = $info['dirname'] . '/' .$info['filename'] .'/'. $cookie_id;
@@ -61,7 +62,7 @@ abstract class FISData {
             //当前提供多份数据
             $filepath = current($list); //first
         }
-        if (false === $filepath) {
+        if (!$filepath) {
             //没有多份数据时，默认数据路径
             $filepath = Util::normalizePath(WWW_ROOT . '/test/' . preg_replace('/\.[a-z]{2,6}$/i', '.' . $this->datatype, $id));
         }
