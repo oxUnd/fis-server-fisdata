@@ -106,7 +106,6 @@
                 $.post('/fisdata/get', {
                     'path': $('#save-path').val()
                 }, function(res) {
-                    console.log(res);
                     editor.setValue(res);
                 });
             });

@@ -60,7 +60,7 @@ abstract class FISData {
             $filepath = $this->existDataFile($tmp_id);
         } else if (($list = $this->getDataList($tmpl))) {
             //当前提供多份数据
-            $filepath = current($list); //first
+            $filepath = Util::normalizePath(current($list)); //first
         }
         if (!$filepath) {
             //没有多份数据时，默认数据路径
@@ -81,6 +81,7 @@ abstract class FISData {
         $files = Util::find($test_dir, '/' . $info['filename'] . '_\d+\.'.$this->datatype.'/i');
         if ($files) {
             foreach ($files as $k => $filepath) {
+                $filepath = Util::normalizePath($filepath);
                 $files[str_replace($test_dir . '/', '', $filepath)] = $filepath;
                 unset($files[$k]);
             }
