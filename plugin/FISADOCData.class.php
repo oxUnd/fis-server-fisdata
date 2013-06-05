@@ -9,7 +9,7 @@ class FISADOCData extends FISData {
         $this->adoc_data_path = WWW_ROOT . '/test/data/';
     }
 
-    protected function getId() {
+    protected function getId($tmpl) {
         $uri = $_SERVER['REQUEST_URI'];
         if (($p = strpos($uri, '?')) !== false) {
             $uri = substr($uri, 0, $p);
