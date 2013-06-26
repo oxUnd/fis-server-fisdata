@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
     <title>FIS - 本地测试数据</title>
     <link rel="stylesheet" href="/fisdata/static/style.css" />
     <script type="text/javascript" src="/fisdata/static/jquery-2.0.0.min.js"></script>
