@@ -74,7 +74,7 @@ class TestData {
         self::register(new FISAdocData());
 
         self::$_flush_data_queue = array(); //暂时只需要一份数据
-        $datatype = $_COOKIE['FIS_DEBUG_DATATYPE'];
+        $datatype = isset($_COOKIE['FIS_DEBUG_DATATYPE']) ? $_COOKIE['FIS_DEBUG_DATATYPE'] : 'php';
         $flush_data = self::$_data_queue[$datatype];
         if (!$flush_data) {
             $flush_data = current(self::$_data_queue);

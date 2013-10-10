@@ -26,9 +26,8 @@ abstract class FISData {
     }
 
     public function getCookieId() {
-        $cookie_id = $_COOKIE['FIS_DEBUG_DATA_ID'];
-        if ($cookie_id) {
-            $cookie_id = trim($cookie_id);
+        if (isset($_COOKIE['FIS_DEBUG_DATA_ID'])) {
+            $cookie_id = trim($_COOKIE['FIS_DEBUG_DATA_ID']);
             if ($cookie_id !== '') {
                 $arr = explode('|', $cookie_id);
                 if (trim($arr[0]) == $this->datatype) {
