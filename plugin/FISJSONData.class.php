@@ -9,7 +9,7 @@ class FISJSONData extends FISData {
         $file = $this->getFile($tmpl);
         $ret = array();
         if (is_file($file)) {
-            $ret = json_decode(file_get_contents($file), true);
+            $ret = json_decode(Util::convertToUtf8(file_get_contents($file)), true);
             if ($ret === null) {
                 $ret = array();
             }
