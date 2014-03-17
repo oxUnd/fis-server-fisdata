@@ -74,12 +74,14 @@ class TestData {
         self::register(new FISAdocData());
 
         self::$_flush_data_queue = array(); //暂时只需要一份数据
-        $datatype = isset($_COOKIE['FIS_DEBUG_DATATYPE']) ? $_COOKIE['FIS_DEBUG_DATATYPE'] : 'php';
+        $datatype = $_COOKIE['FIS_DEBUG_DATATYPE'];
         $flush_data = self::$_data_queue[$datatype];
         if (!$flush_data) {
-            $flush_data = current(self::$_data_queue);
-        }
-        if ($flush_data) {
+            //未指定测试数据则将所有数据类型均填充到数据队列中
+            foreach (self::$_data_queue as $key => $value) {
+                self::$_flush_data_queue[] = $value;
+            }
+        }else{
             self::$_flush_data_queue[] = $flush_data;
         }
 
@@ -94,7 +96,12 @@ class TestData {
         }
 
         foreach (self::$_flush_data_queue as $data_instance) {
-            $template_instance->assign($data_instance->getData($candidate_tmpl));
+            $data = $data_instance->getData($candidate_tmpl);
+            if ($data) {
+                //使用首个有效数据进行渲染
+                $template_instance->assign($data);
+                break;
+            }
         }
 
         $template_instance->display($candidate_tmpl);
