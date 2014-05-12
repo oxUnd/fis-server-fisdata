@@ -22,7 +22,18 @@ class Manager {
         $default =  $this->_data_arr[$this->getCurrentDatatype()];
         $default_arr['datatype'] = $default->getDatatype();
         $default_arr['path'] = $default->getCurrentFilepath($this->_tmpl);
-        $default_arr['data'] = htmlspecialchars(file_get_contents($default->getCurrentFilepath($this->_tmpl)));
+
+        $content = file_get_contents($default->getCurrentFilepath($this->_tmpl));
+
+        $encoding = 'utf-8';
+
+        if (!Util::isUtf8($content)) {
+            $encoding = 'gbk';
+            $content = Util::convertToUtf8($content);
+        }
+        $default_arr['real_encoding'] = $encoding;
+
+        $default_arr['data'] = htmlspecialchars($content);
         $default_arr['list'] = $default->getDataList($this->_tmpl);
         //默认选定
         $default_arr['list_default'] = $default->getCookieId();

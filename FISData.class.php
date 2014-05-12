@@ -110,6 +110,11 @@ abstract class FISData {
             exit(1);
         }
         $data = $post['data'];
+
+        if ($post['encoding'] != 'utf-8') {
+            $data = Util::convertEncoding($data, 'utf-8', 'gbk');
+        }
+
         file_put_contents($file, $data);
         echo '{"message": "保存成功", "code": 0}';
     }

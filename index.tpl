@@ -53,7 +53,8 @@
             function save() {
                 $.post('/fisdata/save', {
                     'data': editor.getValue(),
-                    'path': $('#save-path').val()
+                    'path': $('#save-path').val(),
+                    'encoding': "{%$default.real_encoding%}"
                 }, function(res) {
                     //reload
                     res = eval('(' + res + ')');
