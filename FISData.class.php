@@ -2,6 +2,7 @@
 
 abstract class FISData {
     public $datatype;
+    public $encoding = 'utf-8';
 
 
     public function getDatatype() {

@@ -10,6 +10,9 @@ class FISPHPData extends FISData {
         $ret = array();
         if (is_file($file)) {
             require($file);
+            if (!Util::isUtf8(var_export($fis_data, true))) {
+                $this->encoding = 'gbk';
+            }
             $ret = $fis_data;
         }
         return $ret;

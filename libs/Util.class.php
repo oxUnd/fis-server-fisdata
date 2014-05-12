@@ -127,19 +127,41 @@ class Util {
      * @return string
      */
     public static function convertToUtf8($string) {
-
-        if (!is_string($string)) {
-            return '';
-        }
-
         if (!self::isUtf8($string)) {
-            if (function_exists('mb_convert_encoding')) {
-                $string = mb_convert_encoding($string, 'UTF-8', 'GBK');
-            } else {
-                $string = iconv('GBK','UTF-8//IGNORE', $string);
-            }
+            $string = self::convertEncoding($string, 'gbk', 'utf-8');
+        }
+        return $string;
+    }
+
+    public static function convertEncoding($string, $from, $to) {
+
+        $from = strtoupper($from);
+        $to = strtoupper($to);
+
+        if (function_exists('mb_convert_encoding')) {
+            $string = mb_convert_encoding($string, $to, $from);
+        } else {
+            $string = iconv($from, $to . '//IGNORE', $string);
         }
 
         return $string;
     }
+
+    public static function arrayConvertEncoding(&$array, $encoding) {
+        if (is_array($array)) {
+            foreach ($array as &$v) {
+                if (is_string($v)) {
+                    if (self::isUtf8($v)  && $encoding != 'utf-8') {
+                        $v = self::convertEncoding($v, 'utf-8', $encoding);
+                    } else if (!self::isUtf8($v) && $encoding == 'utf-8') {
+                        $v = self::convertToUtf8($v);
+                    }
+                } else if (is_array($v)) {
+                    self::arrayConvertEncoding($v, $encoding);
+                }
+            } 
+        }
+        return $array;
+    }
+
 }

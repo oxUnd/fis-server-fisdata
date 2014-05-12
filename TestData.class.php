@@ -99,7 +99,7 @@ class TestData {
             $data = $data_instance->getData($candidate_tmpl);
             if ($data) {
                 //使用首个有效数据进行渲染
-                $template_instance->assign($data);
+                $template_instance->assign(Util::arrayConvertEncoding($data, $data_instance->encoding));
                 break;
             }
         }
