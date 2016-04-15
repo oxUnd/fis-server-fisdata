@@ -75,6 +75,10 @@ class TestData {
 
         self::$_flush_data_queue = array(); //暂时只需要一份数据
         $datatype = $_COOKIE['FIS_DEBUG_DATATYPE'];
+        if(isset($_GET['data-type']) && !$_COOKIE['data-type']){
+            $datatype = $_GET['data-type'];
+            setcookie('FIS_DEBUG_DATATYPE', $datatype);
+        }
         $flush_data = self::$_data_queue[$datatype];
         if (!$flush_data) {
             //未指定测试数据则将所有数据类型均填充到数据队列中
