@@ -75,7 +75,7 @@ class TestData {
 
         self::$_flush_data_queue = array(); //暂时只需要一份数据
         $datatype = $_COOKIE['FIS_DEBUG_DATATYPE'];
-        if(isset($_GET['data-type'])){
+        if(isset($_GET['data-type']) && !$_COOKIE['data-type']){
             $datatype = $_GET['data-type'];
             setcookie('FIS_DEBUG_DATATYPE', $datatype);
         }
